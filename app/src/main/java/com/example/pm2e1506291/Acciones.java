@@ -1,8 +1,11 @@
 package com.example.pm2e1506291;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -13,7 +16,11 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -24,10 +31,14 @@ import com.example.pm2e1506291.Models.PaisesModel;
 import com.example.pm2e1506291.Repository.ContactosRepository;
 import com.example.pm2e1506291.Repository.PaisesRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Acciones extends AppCompatActivity {
     private int idpaisSeleccionado, idContacto;
+
+    private ImageView imagen;
+    private String imagenBit;
     private Button camara, galeria, compartir, actualizar, eliminar, llamar;
     private EditText nombre, numero, nota;
     private ImageView imagenContacto;
@@ -52,7 +63,45 @@ public class Acciones extends AppCompatActivity {
         numero = findViewById(R.id.editTextPhone2);
         nota = findViewById(R.id.editTextTextMultiLine2);
         imagenContacto = findViewById(R.id.ivContactoLista2);
-        spinner = findViewById(R.id.spinner2); // Asegúrate de que el ID es correcto en tu XML
+        spinner = findViewById(R.id.spinner2);
+
+        llamar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String numeros = numero.getText().toString();
+                if (ActivityCompat.checkSelfPermission(Acciones.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Acciones.this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + numero));
+                    startActivity(intent);
+                }
+            }
+        });
+
+        camara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                abrirCamara();
+            }
+        });
+
+        galeria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AbrirGaleria();
+            }
+        });
+
+        compartir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT,"nombre: "+"\nCorreo:");
+                intent.setType("text/plain");
+                startActivity(Intent.createChooser(intent, "Compartir con "));
+            }
+        });
 
         // Obtener el ID del contacto desde el Intent
         int contactoId = getIntent().getIntExtra("contacto_id", -1);
@@ -118,5 +167,70 @@ public class Acciones extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+    }
+
+    private void AbrirGaleria() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+
+        galeriaARL.launch(intent);
+    }
+
+    private void abrirCamara() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(intent, 1);
+        }
+    }
+
+    private ActivityResultLauncher<Intent> galeriaARL = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Uri uri = result.getData().getData(); // Obtener la URI de la imagen seleccionada
+                    if (uri != null) {
+                        try {
+                            // Convertir la URI en un Bitmap
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                            imagen.setImageBitmap(bitmap);
+                            imagenBit = imageUtils.encodeToBase64(bitmap);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            Toast.makeText(Acciones.this, R.string.imagenerror, Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(Acciones.this, R.string.imagenerror, Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(Acciones.this, R.string.imagenusuario, Toast.LENGTH_SHORT).show();
+                }
+            }
+    );
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap bitmap = (Bitmap) extras.get("data");
+            imagen.setImageBitmap(bitmap);
+            imagenBit = imageUtils.encodeToBase64(bitmap);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                String numeros = numero.getText().toString();
+                Intent intent = new Intent(Intent.ACTION_CALL);
+                intent.setData(Uri.parse("tel:" + numero));
+                startActivity(intent);
+            } else {
+                Toast.makeText(Acciones.this, "Permiso de llamada no concedido", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
