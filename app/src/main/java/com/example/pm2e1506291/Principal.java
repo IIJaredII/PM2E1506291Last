@@ -43,7 +43,7 @@ public class Principal extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
-
+        ContactosRepository contactosRepository = new ContactosRepository(this);
         btnCamara = findViewById(R.id.button3);
         btnGaleria = findViewById(R.id.button4);
         btnIngresar = findViewById(R.id.button2);
@@ -89,7 +89,7 @@ public class Principal extends AppCompatActivity {
                 } else if (numero.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
                 } else {
-                    ContactosRepository.AddContact(nombre, numero, notas, idPais[0], imagenBit);
+                    contactosRepository.AddContact(nombre.getText().toString(), numero.getText().toString(), notas.getText().toString(), idPais[0], imagenBit);
                 }
             }
         });
