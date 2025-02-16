@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,12 +23,24 @@ import java.util.ArrayList;
 
 public class Acciones extends AppCompatActivity {
     private int idpais;
+    private Button camara,galeria, compartir, actualizar, eliminar, llamar;
+    private EditText nombre, numero, nota;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_acciones);
+        camara=(Button) findViewById(R.id.button6);
+        galeria=(Button) findViewById(R.id.button8);
+        compartir=(Button) findViewById(R.id.button5);
+        actualizar=(Button) findViewById(R.id.button9);
+        eliminar=(Button) findViewById(R.id.button10);
+        llamar=(Button) findViewById(R.id.button10);
+
+        nombre=(EditText) findViewById(R.id.editTextText3);
+        numero=(EditText) findViewById(R.id.editTextPhone2);
+        nota=(EditText) findViewById(R.id.editTextTextMultiLine2);
 
 
         PaisesRepository paisesRepository = new PaisesRepository(this);
