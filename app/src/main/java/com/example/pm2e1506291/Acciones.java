@@ -96,8 +96,11 @@ public class Acciones extends AppCompatActivity {
         compartir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String nom = nombre.getText().toString();
+                String num = numero.getText().toString();
+                String notas = nota.getText().toString();
                 Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT,"nombre: "+"\nCorreo:");
+                intent.putExtra(Intent.EXTRA_TEXT,"Nombre: "+nom+"\nNumero: "+num+"\nNotas: "+notas);
                 intent.setType("text/plain");
                 startActivity(Intent.createChooser(intent, "Compartir con "));
             }
