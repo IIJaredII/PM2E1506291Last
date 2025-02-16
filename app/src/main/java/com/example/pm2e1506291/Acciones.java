@@ -73,7 +73,7 @@ public class Acciones extends AppCompatActivity {
                     ActivityCompat.requestPermissions(Acciones.this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
                 } else {
                     Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + numero));
+                    intent.setData(Uri.parse("tel:" + numeros));
                     startActivity(intent);
                 }
             }
@@ -226,7 +226,7 @@ public class Acciones extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 String numeros = numero.getText().toString();
                 Intent intent = new Intent(Intent.ACTION_CALL);
-                intent.setData(Uri.parse("tel:" + numero));
+                intent.setData(Uri.parse("tel:" + numeros));
                 startActivity(intent);
             } else {
                 Toast.makeText(Acciones.this, "Permiso de llamada no concedido", Toast.LENGTH_SHORT).show();
