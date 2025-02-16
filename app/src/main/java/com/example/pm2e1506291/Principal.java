@@ -33,7 +33,7 @@ import java.util.ArrayList;
 public class Principal extends AppCompatActivity {
 
     private ImageView imagen;
-    private Button btnGaleria, btnCamara, btnIngresar;
+    private Button btnGaleria, btnCamara, btnIngresar, btnLista;
     private String imagenBit;
 
     private EditText nombre, numero, notas;
@@ -105,6 +105,14 @@ public class Principal extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 AbrirGaleria();
+            }
+        });
+
+        btnLista.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Lista.class);
+                startActivity(intent);
             }
         });
 
