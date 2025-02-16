@@ -124,5 +124,41 @@ public class ContactosRepository {
         } finally {
             db.close();
         }
+
+
     }
+    public ContactosModel obtenerContactoPorId(int idContacto) {
+        SQLiteConexion conexion = new SQLiteConexion(context);
+        SQLiteDatabase db = conexion.getReadableDatabase();
+        ContactosModel contacto = null;
+        Cursor cursor = null;
+
+        try {
+            String query = "SELECT * FROM " + ContactosContract.TABLE_NAME + " WHERE " + ContactosContract.COLUMN_ID + "=?";
+            String[] argumentos = {String.valueOf(idContacto)};
+
+            cursor = db.rawQuery(query, argumentos);
+
+            if (cursor.moveToFirst()) {
+                contacto = new ContactosModel();
+                contacto.setId(cursor.getInt(cursor.getColumnIndexOrThrow(ContactosContract.COLUMN_ID)));
+                contacto.setNombre(cursor.getString(cursor.getColumnIndexOrThrow(ContactosContract.COLUMN_NOMBRE)));
+                contacto.setIdpais(cursor.getInt(cursor.getColumnIndexOrThrow(ContactosContract.COLUMN_ID_PAISES)));
+                contacto.setNumero(cursor.getString(cursor.getColumnIndexOrThrow(ContactosContract.COLUMN_NUMERO)));
+                contacto.setNota(cursor.getString(cursor.getColumnIndexOrThrow(ContactosContract.COLUMN_NOTA)));
+                contacto.setImagen(cursor.getString(cursor.getColumnIndexOrThrow(ContactosContract.COLUMN_IMAGEN)));
+                contacto.setFechacreacion(cursor.getString(cursor.getColumnIndexOrThrow(ContactosContract.COLUMN_FECHA_CREACION)));
+            }
+        } catch (Exception ex) {
+            Log.e("SQLiteError", "Error al obtener contacto por ID: " + ex.toString());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+            db.close();
+        }
+
+        return contacto;
+    }
+
 }
