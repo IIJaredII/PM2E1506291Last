@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
         android:text="Name"
         tools:layout_editor_absoluteX="24dp"
         tools:layout_editor_absoluteY="236dp" />
