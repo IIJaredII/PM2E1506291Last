@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -41,7 +42,7 @@ public class Acciones extends AppCompatActivity {
     ContactosRepository contactosRepository = new ContactosRepository(this);
     private ImageView imagen;
     private String imagenBit;
-    private Button camara, galeria, compartir, actualizar, eliminar, llamar;
+    private Button camara, galeria, compartir, actualizar, eliminar, llamar, sinimagen;
     private EditText nombre, numero, nota;
     private ImageView imagenContacto;
     private Spinner spinner;
@@ -53,6 +54,8 @@ public class Acciones extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_acciones);
+
+
 
         // Inicializar vistas
         camara = findViewById(R.id.button6);
@@ -66,6 +69,15 @@ public class Acciones extends AppCompatActivity {
         nota = findViewById(R.id.editTextTextMultiLine2);
         imagenContacto = findViewById(R.id.ivContactoLista2);
         spinner = findViewById(R.id.spinner2);
+        sinimagen = findViewById(R.id.button11);
+
+        sinimagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagenContacto.setImageResource(R.drawable.ic_android_black_24dp);
+                imagenBit="1";
+            }
+        });
 
         llamar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,8 +154,12 @@ public class Acciones extends AppCompatActivity {
 
                 // Si tienes una imagen en Base64, la conviertes a Bitmap y la muestras en un ImageView
                 if (contacto.getImagen() != null) {
+                    if(contacto.getImagen() == "1"){
+                        imagenContacto.setImageResource(R.drawable.ic_android_black_24dp);
+                    }else{
                     imagenContacto.setImageBitmap(imageUtils.decodeFromBase64(contacto.getImagen()));
                     imagenBit = contacto.getImagen();
+                    }
                 }
             }
         } else {
