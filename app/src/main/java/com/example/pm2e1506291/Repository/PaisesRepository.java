@@ -3,12 +3,16 @@ package com.example.pm2e1506291.Repository;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.ParcelUuid;
 import android.util.Log;
 
 import com.example.pm2e1506291.DAO.PaisesDao;
+import com.example.pm2e1506291.Models.PaisesModel;
 import com.example.pm2e1506291.configuracion.ContactosContract;
 import com.example.pm2e1506291.configuracion.PaisesContract;
 import com.example.pm2e1506291.configuracion.SQLiteConexion;
+
+import java.util.ArrayList;
 
 public class PaisesRepository {
     private static Context context;
@@ -17,7 +21,7 @@ public class PaisesRepository {
         this.context = context;
     }
 
-    public static String obtenerCodigoPorIdContacto(String idContacto) {
+    public  String obtenerCodigoPorIdContacto(String idContacto) {
         SQLiteConexion conexion = new SQLiteConexion(context);
         SQLiteDatabase db = conexion.getReadableDatabase();
         Cursor cursor=null;
@@ -60,5 +64,26 @@ public class PaisesRepository {
         return codigoPais;
     }
 
+    public ArrayList<PaisesModel> ObtenerPaises() {
+        SQLiteConexion conexion = new SQLiteConexion(context);
+        SQLiteDatabase db = conexion.getReadableDatabase();
+        ArrayList<PaisesModel> listaPaises = new ArrayList<>();
 
+        Cursor cursor = db.rawQuery(PaisesDao.ObtenerPaises, null);
+
+        if (cursor != null) {
+            while (cursor.moveToNext()) { // Moverse por todos los registros
+                PaisesModel pais = new PaisesModel();
+                pais.setId(cursor.getInt(0)); // ID
+                pais.setNombre(cursor.getString(1)); // Nombre
+                pais.setCodigo(cursor.getString(2)); // Código
+                pais.setLongitud(cursor.getInt(3)); // Longitud
+                listaPaises.add(pais);
+            }
+            cursor.close();
+        }
+
+        db.close();
+        return listaPaises;
+    }
 }

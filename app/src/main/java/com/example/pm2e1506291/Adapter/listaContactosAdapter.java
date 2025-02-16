@@ -1,5 +1,6 @@
 package com.example.pm2e1506291.Adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class listaContactosAdapter extends RecyclerView.Adapter<listaContactosAd
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ContactosModel contacto = listaContactos.get(position);

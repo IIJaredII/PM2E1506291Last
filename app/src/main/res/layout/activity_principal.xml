@@ -11,8 +11,15 @@
         android:id="@+id/ivContactoLista"
         android:layout_width="140dp"
         android:layout_height="146dp"
-        tools:layout_editor_absoluteX="24dp"
-        tools:layout_editor_absoluteY="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="74dp"
+        app:layout_constraintBottom_toTopOf="@+id/editTextText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:srcCompat="@tools:sample/avatars" />
 
     <Button
@@ -41,6 +48,16 @@
         android:text="Name"
         tools:layout_editor_absoluteX="24dp"
         tools:layout_editor_absoluteY="236dp" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="312dp"
+        android:layout_height="26dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.363"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -92,16 +109,6 @@
         android:inputType="textMultiLine"
         tools:layout_editor_absoluteX="24dp"
         tools:layout_editor_absoluteY="551dp" />
-
-    <EditText
-        android:id="@+id/editTextText2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="text"
-        android:text="Name"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="343dp" />
 
     <Button
         android:id="@+id/button3"
