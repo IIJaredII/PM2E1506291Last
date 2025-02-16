@@ -6,17 +6,19 @@ public class ContactosModel {
     private String nombre;
     private int idpais;
     private String numero;
+    private String nota;
     private String imagen;
     private String fechacreacion;
 
     public ContactosModel() {
     }
 
-    public ContactosModel(int id, String nombre, int idpais, String numero, String imagen, String fechacreacion) {
+    public ContactosModel(int id, String nombre, int idpais, String numero,String nota , String imagen, String fechacreacion) {
         this.id = id;
         this.nombre = nombre;
         this.idpais = idpais;
         this.numero = numero;
+        this.nota=nota;
         this.imagen = imagen;
         this.fechacreacion = fechacreacion;
     }
@@ -27,6 +29,14 @@ public class ContactosModel {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNota() {
+        return nota;
+    }
+
+    public void setNota(String nota) {
+        this.nota = nota;
     }
 
     public String getNombre() {

@@ -6,6 +6,7 @@ public class ContactosContract {
     public static String COLUMN_NOMBRE="nombre";
     public static String COLUMN_ID_PAISES="idpais";
     public static String COLUMN_NUMERO="numero";
+    public static String COLUMN_NOTA="nota";
     public static String COLUMN_IMAGEN="imagen";
     public static String COLUMN_FECHA_CREACION="fechacreacion";
 
@@ -15,12 +16,14 @@ public class ContactosContract {
             COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT,"+
             COLUMN_NOMBRE+" TEXT NOT NULL,"+
             COLUMN_ID_PAISES+" INTEGER NOT NULL,"+
-            COLUMN_NUMERO + " INTEGER NOT NULL"+
+            COLUMN_NUMERO + " TEXT NOT NULL"+
+            COLUMN_NOTA+" TEXT,"+
             COLUMN_IMAGEN + " TEXT NOT NULL"+
-            COLUMN_FECHA_CREACION+" TEXT NOT NULL)"+
+            COLUMN_FECHA_CREACION+" TEXT DEFAULT CURRENT_TIMESTAMP)"+
             "FOREIGN KEY (" + COLUMN_ID_PAISES + ") REFERENCES "+PaisesContract.TABLE_NAME+"("+PaisesContract.COLUMN_ID+") ON DELETE CASCADE ON UPDATE CASCADE)";
 
     public static final String DROP_TABLE_CONTACTOS ="DROP TABLE IF EXISTS "+TABLE_NAME;
+
 
 
 }

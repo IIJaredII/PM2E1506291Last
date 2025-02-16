@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">PM2E1506291</string>
+    <string name="registroingresado">Registro ingresado con exito</string>
+    <string name="registroerroneo">Registro no ingresado</string>
+    <string name="imagenerror">Error al obtener la imagen</string>
+    <string name="imagenusuario">Cancelado por el usuario</string>
 </resources>
