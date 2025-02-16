@@ -74,7 +74,7 @@ public class Acciones extends AppCompatActivity {
                 String numeros = numero.getText().toString();
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(Acciones.this);
-                builder.setMessage("¿Desea realizar la llamada al numero " + numeros + "?")
+                builder.setMessage("Desea realizar la llamada al numero " + numeros + "?")
                         .setTitle("Confirmar llamada");
 
                 builder.setPositiveButton("Llamar", new DialogInterface.OnClickListener() {
@@ -208,14 +208,33 @@ public class Acciones extends AppCompatActivity {
         eliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int contactoId = getIntent().getIntExtra("contacto_id", -1);
-                if (contactoId != -1) { // Verificar que el contacto es válido
-                    contactosRepository.deleteContact(contactoId);
-                    Toast.makeText(getApplicationContext(), "Contacto eliminado", Toast.LENGTH_SHORT).show();
-                    finish(); // Cerrar la actividad después de eliminar
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error: No se puede eliminar", Toast.LENGTH_SHORT).show();
-                }
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Acciones.this);
+                builder.setMessage("Desea ELIMINAR este contacto?")
+                        .setTitle("Confirmar Eliminacion");
+
+                builder.setPositiveButton("Eliminar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        int contactoId = getIntent().getIntExtra("contacto_id", -1);
+                        if (contactoId != -1) { // Verificar que el contacto es válido
+                            contactosRepository.deleteContact(contactoId);
+                            Toast.makeText(getApplicationContext(), "Contacto eliminado", Toast.LENGTH_SHORT).show();
+                            finish(); // Cerrar la actividad después de eliminar
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Error: No se puede eliminar", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 
