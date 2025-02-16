@@ -143,6 +143,7 @@ public class Acciones extends AppCompatActivity {
                 // Si tienes una imagen en Base64, la conviertes a Bitmap y la muestras en un ImageView
                 if (contacto.getImagen() != null) {
                     imagenContacto.setImageBitmap(imageUtils.decodeFromBase64(contacto.getImagen()));
+                    imagenBit = contacto.getImagen();
                 }
             }
         } else {
@@ -193,14 +194,7 @@ public class Acciones extends AppCompatActivity {
                 } else if (numero.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
                 } else {
-                    contactosRepository.UpdateContact(
-                            contactoId,  // ID del contacto que se está editando
-                            nombre.getText().toString(),
-                            numero.getText().toString(),
-                            nota.getText().toString(),
-                            idpaisSeleccionado,
-                            imagenBit
-                    );
+                    contactosRepository.UpdateContact(contactoId, nombre.getText().toString(), numero.getText().toString(), nota.getText().toString(), idpaisSeleccionado, imagenBit);
                 }
             }
         });
