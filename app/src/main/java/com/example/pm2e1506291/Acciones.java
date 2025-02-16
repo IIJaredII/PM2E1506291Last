@@ -36,7 +36,7 @@ import java.util.ArrayList;
 
 public class Acciones extends AppCompatActivity {
     private int idpaisSeleccionado, idContacto;
-
+    ContactosRepository contactosRepository = new ContactosRepository(this);
     private ImageView imagen;
     private String imagenBit;
     private Button camara, galeria, compartir, actualizar, eliminar, llamar;
@@ -75,6 +75,39 @@ public class Acciones extends AppCompatActivity {
                     Intent intent = new Intent(Intent.ACTION_CALL);
                     intent.setData(Uri.parse("tel:" + numeros));
                     startActivity(intent);
+                }
+            }
+        });
+
+        actualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (nombre.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.vacionombre), Toast.LENGTH_SHORT).show();
+                } else if (numero.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
+                } else {
+                    contactosRepository.UpdateContact(
+                            idContacto,  // ID del contacto que se está editando
+                            nombre.getText().toString(),
+                            numero.getText().toString(),
+                            nota.getText().toString(),
+                            idpaisSeleccionado,
+                            imagenBit
+                    );
+                }
+            }
+        });
+
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (idContacto != -1) { // Verificar que el contacto es válido
+                    contactosRepository.deleteContact(idContacto);
+                    Toast.makeText(getApplicationContext(), "Contacto eliminado", Toast.LENGTH_SHORT).show();
+                    finish(); // Cerrar la actividad después de eliminar
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error: No se puede eliminar", Toast.LENGTH_SHORT).show();
                 }
             }
         });
