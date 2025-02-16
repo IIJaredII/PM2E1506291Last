@@ -1,5 +1,7 @@
 package com.example.pm2e1506291;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -68,14 +70,33 @@ public class Acciones extends AppCompatActivity {
         llamar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String numeros = numero.getText().toString();
-                if (ActivityCompat.checkSelfPermission(Acciones.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(Acciones.this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
-                } else {
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse("tel:" + numeros));
-                    startActivity(intent);
-                }
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Acciones.this);
+                builder.setMessage("¿Desea realizar la llamada al numero " + numeros + "?")
+                        .setTitle("Confirmar llamada");
+
+                builder.setPositiveButton("Llamar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        if (ActivityCompat.checkSelfPermission(Acciones.this, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                            ActivityCompat.requestPermissions(Acciones.this, new String[]{android.Manifest.permission.CALL_PHONE}, 1);
+                        } else {
+                            Intent intent = new Intent(Intent.ACTION_CALL);
+                            intent.setData(Uri.parse("tel:" + numeros));
+                            startActivity(intent);
+                        }
+                    }
+                });
+
+                builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
         });
 

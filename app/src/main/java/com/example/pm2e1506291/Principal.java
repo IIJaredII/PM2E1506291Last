@@ -47,6 +47,7 @@ public class Principal extends AppCompatActivity {
         btnCamara = findViewById(R.id.button3);
         btnGaleria = findViewById(R.id.button4);
         btnIngresar = findViewById(R.id.button2);
+        btnLista = findViewById(R.id.button);
         nombre = findViewById(R.id.editTextText);
         numero = findViewById(R.id.editTextPhone);
         notas = findViewById(R.id.editTextTextMultiLine);
