@@ -79,39 +79,6 @@ public class Acciones extends AppCompatActivity {
             }
         });
 
-        actualizar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (nombre.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.vacionombre), Toast.LENGTH_SHORT).show();
-                } else if (numero.getText().toString().trim().isEmpty()) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
-                } else {
-                    contactosRepository.UpdateContact(
-                            idContacto,  // ID del contacto que se está editando
-                            nombre.getText().toString(),
-                            numero.getText().toString(),
-                            nota.getText().toString(),
-                            idpaisSeleccionado,
-                            imagenBit
-                    );
-                }
-            }
-        });
-
-        eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (idContacto != -1) { // Verificar que el contacto es válido
-                    contactosRepository.deleteContact(idContacto);
-                    Toast.makeText(getApplicationContext(), "Contacto eliminado", Toast.LENGTH_SHORT).show();
-                    finish(); // Cerrar la actividad después de eliminar
-                } else {
-                    Toast.makeText(getApplicationContext(), "Error: No se puede eliminar", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
         camara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,6 +161,40 @@ public class Acciones extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
                 // No hacer nada
+            }
+        });
+        actualizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int contactoId = getIntent().getIntExtra("contacto_id", -1);
+                if (nombre.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.vacionombre), Toast.LENGTH_SHORT).show();
+                } else if (numero.getText().toString().trim().isEmpty()) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.vacionumero), Toast.LENGTH_SHORT).show();
+                } else {
+                    contactosRepository.UpdateContact(
+                            contactoId,  // ID del contacto que se está editando
+                            nombre.getText().toString(),
+                            numero.getText().toString(),
+                            nota.getText().toString(),
+                            idpaisSeleccionado,
+                            imagenBit
+                    );
+                }
+            }
+        });
+
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int contactoId = getIntent().getIntExtra("contacto_id", -1);
+                if (contactoId != -1) { // Verificar que el contacto es válido
+                    contactosRepository.deleteContact(contactoId);
+                    Toast.makeText(getApplicationContext(), "Contacto eliminado", Toast.LENGTH_SHORT).show();
+                    finish(); // Cerrar la actividad después de eliminar
+                } else {
+                    Toast.makeText(getApplicationContext(), "Error: No se puede eliminar", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

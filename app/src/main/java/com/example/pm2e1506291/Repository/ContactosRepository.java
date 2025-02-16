@@ -112,11 +112,12 @@ public class ContactosRepository {
             String[] argumento = {String.valueOf(idContacto)};
 
             int filasEliminadas = db.delete(ContactosContract.TABLE_NAME, clausulaWhere, argumento);
+            String mensaje =" Argumento: "+argumento.toString();
 
             if (filasEliminadas > 0) {
                 Toast.makeText(context, "Eliminado correctamente", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(context, "No se logro eliminar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "No se logro eliminar"+mensaje, Toast.LENGTH_SHORT).show();
             }
         } catch (Exception ex) {
             Toast.makeText(context, "Error: " + ex.toString(), Toast.LENGTH_SHORT).show();
