@@ -4,4 +4,6 @@
     <string name="registroerroneo">Registro no ingresado</string>
     <string name="imagenerror">Error al obtener la imagen</string>
     <string name="imagenusuario">Cancelado por el usuario</string>
+    <string name="vacionombre">Debe escribir el nombre</string>
+    <string name="vacionumero">Debe escribir el telefono</string>
 </resources>
