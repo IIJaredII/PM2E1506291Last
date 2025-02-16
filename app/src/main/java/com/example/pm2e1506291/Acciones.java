@@ -1,15 +1,12 @@
 package com.example.pm2e1506291;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -19,20 +16,15 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.pm2e1506291.Funciones.imageUtils;
 import com.example.pm2e1506291.Models.PaisesModel;
 import com.example.pm2e1506291.Repository.PaisesRepository;
 
 import java.util.ArrayList;
 
 public class Acciones extends AppCompatActivity {
-    private int idpaisSeleccionado, idContacto;
-    private Button camara, galeria, compartir, actualizar, eliminar, llamar;
+    private int idpais;
+    private Button camara,galeria, compartir, actualizar, eliminar, llamar;
     private EditText nombre, numero, nota;
-    private ImageView imagenContacto;
-    private Spinner spinner;
-    private ArrayList<PaisesModel> paisesList;
-    private PaisesRepository paisesRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,31 +36,23 @@ public class Acciones extends AppCompatActivity {
         compartir=(Button) findViewById(R.id.button5);
         actualizar=(Button) findViewById(R.id.button9);
         eliminar=(Button) findViewById(R.id.button10);
-        llamar=(Button) findViewById(R.id.button7);
+        llamar=(Button) findViewById(R.id.button10);
 
         nombre=(EditText) findViewById(R.id.editTextText3);
         numero=(EditText) findViewById(R.id.editTextPhone2);
         nota=(EditText) findViewById(R.id.editTextTextMultiLine2);
 
-        Intent intent = getIntent();
-        if (intent != null) {
-            idContacto = intent.getIntExtra("id", -1);
-            nombre.setText(intent.getStringExtra("nombre"));
-            numero.setText(intent.getStringExtra("numero"));
-            nota.setText(intent.getStringExtra("nota"));
-            idpaisSeleccionado = intent.getIntExtra("idpais", -1);
 
-            // Decodificar imagen
-            String imagenBase64 = intent.getStringExtra("imagen");
-            if (imagenBase64 != null && !imagenBase64.isEmpty()) {
-                Bitmap bitmap = imageUtils.decodeFromBase64(imagenBase64);
-                imagenContacto.setImageBitmap(bitmap);
-            }
-        }
+        PaisesRepository paisesRepository = new PaisesRepository(this);
+        final int[] idPais = {-1}; // Inicializar el ID del país seleccionado
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
 
-        // Cargar países en el Spinner
+        Spinner spinner = findViewById(R.id.spinner2);
+
+        ArrayList<PaisesModel> paises = paisesRepository.ObtenerPaises();
         ArrayList<String> nombresPaises = new ArrayList<>();
-        for (PaisesModel pais : paisesList) {
+
+        for (PaisesModel pais : paises) {
             nombresPaises.add(pais.getNombre());
         }
 
@@ -76,20 +60,11 @@ public class Acciones extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        // Seleccionar el país correcto
-        for (int i = 0; i < paisesList.size(); i++) {
-            if (paisesList.get(i).getId() == idpaisSeleccionado) {
-                spinner.setSelection(i);
-                break;
-            }
-        }
-
-        // Manejar selección de país
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, android.view.View view, int position, long id) {
-                idpaisSeleccionado = paisesList.get(position).getId();
-                Toast.makeText(getApplicationContext(), "País seleccionado: " + paisesList.get(position).getNombre(), Toast.LENGTH_SHORT).show();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                idPais[0] = paises.get(position).getId();
+                Toast.makeText(getApplicationContext(), "País seleccionado: " + paises.get(position).getNombre() + ", ID: " + idPais[0], Toast.LENGTH_SHORT).show();
             }
 
             @Override
