@@ -2,6 +2,7 @@ package com.example.pm2e1506291.Adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.pm2e1506291.Acciones;
 import com.example.pm2e1506291.Funciones.imageUtils;
 import com.example.pm2e1506291.Models.ContactosModel;
 import com.example.pm2e1506291.R;
@@ -47,7 +49,9 @@ public class listaContactosAdapter extends RecyclerView.Adapter<listaContactosAd
         holder.imageviwe.setImageBitmap(imageUtils.decodeFromBase64(contacto.getImagen()));
 
         holder.itemView.setOnClickListener(view -> {
-
+            Intent intent = new Intent(context, Acciones.class);
+            intent.putExtra("contacto_id", contacto.getId());
+            context.startActivity(intent);
         });
     }
 
